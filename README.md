@@ -1,4 +1,4 @@
-psloader
+herdic
 ========
 
-IoC Loader for Nodejs
+Lightweight IoC container for nodejs applications.
