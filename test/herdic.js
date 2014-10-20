@@ -122,58 +122,58 @@ exports.loadBundle = {
   },
 
 
-  testValidateSubmodules: function(test){
+  testValidateComponents: function(test){
     var self = this;
 
     test.throws(function(){
-      self.herdic.loadBundle({name: 'MyBundle', submodules:'a string'});
-    }, Error, 'Throws if bundle submodules is a string');
+      self.herdic.loadBundle({name: 'MyBundle', components:'a string'});
+    }, Error, 'Throws if bundle components is a string');
 
     test.throws(function(){
-      self.herdic.loadBundle({name: 'MyBundle', submodules:{a:'a string'}});
-    }, Error, 'Throws if bundle submodules is an object');
+      self.herdic.loadBundle({name: 'MyBundle', components:{a:'a string'}});
+    }, Error, 'Throws if bundle components is an object');
 
 
     // should allow null
-    this.herdic.loadBundle({name:'MyBundle', submodules:null});
+    this.herdic.loadBundle({name:'MyBundle', components:null});
 
     // should allow array
-    this.herdic.loadBundle({name:'MyBundle', submodules:[]});
+    this.herdic.loadBundle({name:'MyBundle', components:[]});
 
 
     // should throw if submodule doesnt have name
     test.throws(function(){
-      self.herdic.loadBundle({name:'MyBundle', submodules:[
+      self.herdic.loadBundle({name:'MyBundle', components:[
         {}
       ]});
     }, Error, 'Should throw if submodule doesnt haven name');
 
 
     test.throws(function(){
-      self.herdic.loadBundle({name:'MyBundle', submodules:[
+      self.herdic.loadBundle({name:'MyBundle', components:[
         {name:null}
       ]});
     }, Error, 'Should throw if submodule name is null');
 
     test.throws(function(){
-      self.herdic.loadBundle({name:'MyBundle', submodules:[
+      self.herdic.loadBundle({name:'MyBundle', components:[
         {name:56}
       ]});
     }, Error, 'Should throw if submodule name is number');
 
     test.throws(function(){
-      self.herdic.loadBundle({name:'MyBundle', submodules:[
+      self.herdic.loadBundle({name:'MyBundle', components:[
         {name:{}}
       ]});
     }, Error, 'Should throw if submodule name is object');
 
     test.throws(function(){
-      self.herdic.loadBundle({name:'MyBundle', submodules:[
+      self.herdic.loadBundle({name:'MyBundle', components:[
         {name:'service'}
       ]});
     }, Error, 'Should throw if submodule has no definition');
 
-    self.herdic.loadBundle({name:'MyBundle', submodules:[
+    self.herdic.loadBundle({name:'MyBundle', components:[
       {name:'service', value:'Constant'}
     ]});
 
@@ -207,7 +207,7 @@ exports.boot = {
         runCalled = true;
         test.equals(MyService.value, 4259, 'Should inject service into run function');
       },
-      submodules:[
+      components:[
         {
           name:'MyServiceProvider',
           provider: function(){
@@ -265,7 +265,7 @@ exports.boot = {
 
         called.run.a = true;
       },
-      submodules:[
+      components:[
 
       ]
     };
@@ -287,7 +287,7 @@ exports.boot = {
 
         called.run.b = true;
       },
-      submodules:[
+      components:[
 
       ]
     };
@@ -309,7 +309,7 @@ exports.boot = {
 
         called.run.c = true;
       },
-      submodules:[
+      components:[
 
       ]
     };
