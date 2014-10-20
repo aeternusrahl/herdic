@@ -51,8 +51,8 @@ A bundle is defined by a bundle definition object.
 Use the loadBundle method to load a module. Note that this must be done prior to booting the application.
 
 ```
-var hedric = require('hedric');
-hedric.loadBundle(require('./MyFeatureBundle/bundle.js'));
+var herdic = require('herdic');
+herdic.loadBundle(require('./MyFeatureBundle/bundle.js'));
 
 ```
 
@@ -177,7 +177,7 @@ module.exports = {
 
 ## <a name="booting">Booting</a>
 After all the modules are loaded, it is time to boot the application.
-    hedric.boot();
+    herdic.boot();
 The boot process takes place in two phases: configuration and run.
 
 ### Configure Phase
