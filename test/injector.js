@@ -264,7 +264,7 @@ exports.providerInjector = {
     var funcProvider = function(){
       this.add = function(){}
       this.$get = function(){
-        this.isService = true;
+        return {isService: true};
       };
     };
 

@@ -1,6 +1,6 @@
 {
   "name": "herdic",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Herdic is a light-weight application bootstrap framework for nodejs with dependency injection",
   "main": "lib/herdic.js",
   "directories": {

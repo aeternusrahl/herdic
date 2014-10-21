@@ -142,8 +142,7 @@ module.exports = {
     // Required
     // A dependency-injected constructor function which creates a provider object.
     // A provider is required to define a $get property. Typically, this is another
-    // dependency-injected constructor function that will be used to instantiate the
-    // service after the configuration phase.
+    // dependency-injected function that will return a service.
     provider: function GreeterProvider(){
         var theGreeting = 'hello';
         this.setGreeting = function(newGreeting){
@@ -151,9 +150,11 @@ module.exports = {
         };
 
         this.$get = function Greeter(MyFeatureConfig, AnotherService){
-            this.greet = function(person) {
-                console.log(theGreeting + ' ' + person);
-            }
+            return {
+                greet:function(person) {
+                    console.log(theGreeting + ' ' + person);
+                }
+            };
         };
     }
 };
