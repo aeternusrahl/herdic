@@ -183,6 +183,56 @@ exports.loadBundle = {
 
 
 
+exports.getBundle = {
+
+  testGetUnknownBundle: function(test){
+    var self = this;
+
+    test.throws(function(){
+      self.herdic.getBundle('nothingLoaded');
+    }, Error, 'Should throw if getBundle before any are loaded');
+
+    self.herdic.loadBundle({name:'a bundle'});
+
+    test.throws(function(){
+      self.herdic.getBundle('NotTheRightName');
+    }, Error, 'Should throw if getBundle on unknown name');
+
+
+    test.done();
+  },
+
+
+  testGetBundleExtraProperties: function(test){
+
+    var CustomBundleDef = {
+      name: 'CustomBundle',
+      depends: ['AnotherBundle'],
+      config: function(){},
+      run: function(){},
+      myextra: {
+        settingA: 'ValueA'
+      }
+    };
+
+    // load the bundle
+    this.herdic.loadBundle(CustomBundleDef);
+
+
+    // get the bundle
+    var bundle = this.herdic.getBundle('CustomBundle');
+
+    // make sure got right bundle
+    test.equals(bundle, CustomBundleDef, 'Should return same bundle definition object');
+    test.equals(bundle.myextra.settingA, 'ValueA', 'Should preserve extra properties on bundle');
+
+    test.done();
+  }
+
+};
+
+
+
 exports.boot = {
 
   testBootSingleBundle: function(test){
