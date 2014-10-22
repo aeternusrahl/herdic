@@ -227,6 +227,27 @@ exports.getBundle = {
     test.equals(bundle.myextra.settingA, 'ValueA', 'Should preserve extra properties on bundle');
 
     test.done();
+  },
+
+
+  testGetAllBundles: function(test){
+
+    // get when no bundles registered
+    var result = this.herdic.getAllBundles();
+
+    test.ok(Array.isArray(result), 'Returns array');
+    test.equals(0, result.length, 'Returns 0-length array when no bundles registered');
+
+    this.herdic.loadBundle({name:'BundleB', depends:['BundleA']});
+    this.herdic.loadBundle({name:'BundleA', depends:[]});
+
+    result = this.herdic.getAllBundles();
+
+    test.equals(2, result.length, 'Returns array with all registered bundles');
+    test.equals(result[0].name, 'BundleA', 'First result should be root dependency');
+    test.equals(result[1].name, 'BundleB', 'Second result should be other bundle');
+
+    test.done();
   }
 
 };
