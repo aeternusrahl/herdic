@@ -191,6 +191,31 @@ exports.providerInjector = {
   },
 
 
+  testProviderAsFunctionAsInstance:function(test){
+    var PROVIDER_NAME = 'SimpleFuncProvider';
+
+    var funcProvider = function(){
+      return 'hello!';
+    };
+
+    // make sure has returns false before we register it
+    test.equals(false, this.providerInjector.has(PROVIDER_NAME), 'Should not have provider before registered');
+
+    // register the provider
+    this.providerInjector.register(PROVIDER_NAME, funcProvider, true);
+
+    // make sure has returns true (automatically creates instance)
+    test.equals(true, this.providerInjector.has(PROVIDER_NAME), 'Should create instance of object provider when registered');
+
+    var inst = this.providerInjector.get(PROVIDER_NAME);
+
+    // verify inst equals $get object
+    test.equals(inst, funcProvider, 'Get provider should return function instance');
+
+    test.done();
+  },
+
+
   testProviderFunctionReturnsString:function(test){
     var PROVIDER_NAME = 'InvalidFuncProvider';
 

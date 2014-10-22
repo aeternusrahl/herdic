@@ -200,5 +200,13 @@ started up in order of dependency.
 
 Note: Providers are no longer accessible during the run phase. However, you may inject the services those providers created.
 
+
+## Injecting Other Node Modules
+Use the setValue helper method to register other modules as injectable values into your providers and services.
+
+```
+herdic.setValue('fs', require('fs'));
+```
+
 ## Example
 TBD.
