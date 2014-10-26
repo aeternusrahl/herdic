@@ -280,7 +280,7 @@ exports.boot = {
       },
       components:[
         {
-          name:'MyServiceProvider',
+          name:'MyService',
           provider: function(){
             var configValue = null;
             this.setConfigValue = function(arg) {
