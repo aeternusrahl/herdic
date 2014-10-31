@@ -272,11 +272,13 @@ exports.boot = {
         test.ok(MyServiceProvider.hasOwnProperty('setConfigValue'), 'Should inject provider into config function');
         MyServiceProvider.setConfigValue(4259);
       },
-      run: function(MyService){
+      run: function(MyService, SimpleService){
         test.ok(configureCalled, 'Should call run after configure');
         test.ok(!runCalled, 'Should not call run more than once');
         runCalled = true;
         test.equals(MyService.value, 4259, 'Should inject service into run function');
+        test.ok(SimpleService != null, 'Should inject simple service into run function');
+        test.ok(SimpleService.hasOwnProperty('doStuff'), 'Should create service instance');
       },
       components:[
         {
@@ -290,6 +292,12 @@ exports.boot = {
               return {value:configValue};
             };
           }//end provider
+        },
+        {
+          name:'SimpleService',
+          service: function(){
+            this.doStuff = function(){};
+          }
         }
       ]
     };
