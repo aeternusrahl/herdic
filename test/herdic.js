@@ -1,5 +1,7 @@
 'use strict';
 
+var $q = require('q');
+
 exports.setUp = function(callback){
   delete require.cache[require.resolve('../lib/injector.js')];
   delete require.cache[require.resolve('../lib/herdic.js')];
@@ -303,12 +305,18 @@ exports.boot = {
     };
 
     this.herdic.loadBundle(BundleA);
-    this.herdic.boot();
+    var result = this.herdic.boot();
 
-    test.ok(configureCalled, 'should call configure function');
-    test.ok(runCalled, 'should call run function');
+    test.ok($q.isPromise(result), 'boot should return a promise');
 
-    test.done();
+    result.then(function(){
+      test.ok(configureCalled, 'should call configure function');
+      test.ok(runCalled, 'should call run function');
+    }).catch(function(){
+      test.fail('Should not reject boot promise');
+    }).finally(function(){
+      test.done();
+    });
   },
 
 
@@ -336,6 +344,8 @@ exports.boot = {
         test.ok(!called.configure.c, 'should call config on A before C');
 
         called.configure.a = true;
+
+        return $q.when();
       },
       run: function(){
         test.ok(!called.run.a, 'should not call run on A more than once');
@@ -343,6 +353,8 @@ exports.boot = {
         test.ok(!called.run.c, 'should call run on A before C');
 
         called.run.a = true;
+
+        return $q.when().delay(50);
       },
       components:[
 
@@ -380,6 +392,7 @@ exports.boot = {
         test.ok(!called.configure.c, 'should not call config on C more than once');
 
         called.configure.c = true;
+        return $q.when().delay(10);
       },
       run: function(){
         test.ok(called.run.a, 'should call run on A before C');
@@ -397,17 +410,25 @@ exports.boot = {
     this.herdic.loadBundle(BundleB);
     this.herdic.loadBundle(BundleC);
     this.herdic.loadBundle(BundleA);
-    this.herdic.boot();
+    var result = this.herdic.boot();
 
-    test.ok(called.configure.a, 'Should call configure on bundle a');
-    test.ok(called.configure.b, 'Should call configure on bundle b');
-    test.ok(called.configure.c, 'Should call configure on bundle c');
+    test.ok($q.isPromise(result), 'boot should return promise');
 
-    test.ok(called.run.a, 'Should call run on bundle a');
-    test.ok(called.run.b, 'Should call run on bundle b');
-    test.ok(called.run.c, 'Should call run on bundle c');
+    result.then(function(){
+      test.ok(called.configure.a, 'Should call configure on bundle a');
+      test.ok(called.configure.b, 'Should call configure on bundle b');
+      test.ok(called.configure.c, 'Should call configure on bundle c');
 
-    test.done();
+      test.ok(called.run.a, 'Should call run on bundle a');
+      test.ok(called.run.b, 'Should call run on bundle b');
+      test.ok(called.run.c, 'Should call run on bundle c');
+
+    }).catch(function(){
+      test.fail('Should not reject boot promise');
+    }).finally(function(){
+      test.done();
+    });
+
   },
 
 
