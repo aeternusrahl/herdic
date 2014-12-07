@@ -34,11 +34,13 @@ A bundle is defined by a bundle definition object.
     depends: ['MyOtherBundle'],
 
     // Optional
-    // Dependency-injected function used to configure this bundle's providers before the application starts
+    // Dependency-injected function used to configure this bundle's providers before the application starts.
+    // May return a promise to perform long-running operations.
     config: function(ServiceOneProvider, ServiceTwoProvider) {  },
 
     // Optional
     // Dependency-injected function used to initialize this bundle and its services
+    // May return a promise to perform long-running operations.
     run: function(ServiceOne, ServiceTwo) { },
 
     // Optional
@@ -182,7 +184,10 @@ After all the bundles are loaded, it is time to boot the application.
 herdic.boot();
 ```
 
-The boot process takes place in two phases: configuration and run.
+The boot process takes place in two phases: configuration and run.  These operations may be asynchronous, so the boot()
+method returns a promise (Herdic uses [Q](https://github.com/kriskowal/q/) promises).  The boot process occurs serially.
+So if a bundle's `config` or `run` method returns a promise, Herdic will not continue booting until the promise is
+resolved.
 
 ### Configure Phase
 In the configuration phase, all providers are instantiated and each bundle's `config` function is called (if defined).
